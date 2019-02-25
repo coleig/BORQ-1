@@ -1,30 +1,35 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import '../App.css';
+import { logoutUser } from "../../actions/authActions";
 
+class BrowseEvents extends Component {
+  onLogoutClick = e => {
+    e.preventDefault();
+    this.props.logoutUser();
+  };
 
-class Dashboard extends Component {
-
-  render() {
-    const { user } = this.props.history;
+render() {
+    const { user } = this.props.auth;
 return (
       <div style={{ height: "75vh" }} className="container valign-wrapper">
         <div className="row">
           <div className="col s12 center-align" style={{padding:"100px"}}>
             <h4>
-              <b>Hey there,</b> {user.email}!
+              <b>Hey there,</b> {user.name.split(" ")[0]}!
             </h4>
-              <p>You have {user.dogs ? user.dogs.length : 0} dogs.</p>
-              <p className="flow-text grey-text text-darken-1">
-                You are logged into a full-stack{" "}
-                <span style={{ fontFamily: "monospace" }}>MERN</span> app 👏
+              <p>You have {user.events ? user.events.length : 0} events upcoming.
               </p>
+
+
+
+
             
             <Link to="/mydogs" className="btn btn-lg btn-primary btn-block text-uppercase">My Dogs</Link>
             <Link to="/myevents" className="btn btn-lg btn-primary btn-block text-uppercase">My Events</Link>
             <Link to="/browseevents" className="btn btn-lg btn-primary btn-block text-uppercase">Browse Events</Link>
+
 
             <button
               style={{
@@ -44,9 +49,8 @@ return (
     );
   }
 }
-
-Dashboard.propTypes = {
-  // logoutUser: PropTypes.func.isRequired,
+BrowseEvents.propTypes = {
+  logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
 const mapStateToProps = state => ({
@@ -54,6 +58,5 @@ const mapStateToProps = state => ({
 });
 export default connect(
   mapStateToProps,
-  // { logoutUser }
-)(Dashboard);
-// export default Dashboard;
+  { logoutUser }
+)(BrowseEvents);
